@@ -1,18 +1,21 @@
 <?php 
 include('config.php'); 
 
-
 if (isset($_POST['nome'])) {
     $nome = $_POST['nome'];
     $media = $_POST['media'];
     $mensalidade = $_POST['mensalidade'];
 
-   
+    // Corrigir formato brasileiro
     $mensalidade = str_replace('.', '', $mensalidade); 
     $mensalidade = str_replace(',', '.', $mensalidade);
 
     mysqli_query($conn, "INSERT INTO alunos (nome, media, mensalidade)
     VALUES ('$nome', '$media', '$mensalidade')");
+
+    // 🔥 CORREÇÃO PRINCIPAL (evitar duplicação)
+    header("Location: index.php");
+    exit;
 }
 ?>
 
@@ -22,7 +25,6 @@ if (isset($_POST['nome'])) {
     Nome: <input type="text" name="nome" required><br><br>
     Média: <input type="number" step="0.1" name="media" required><br><br>
 
-    
     Mensalidade: <input type="text" name="mensalidade" required><br><br>
 
     <button type="submit">Salvar</button>
@@ -43,7 +45,6 @@ if (isset($_POST['nome'])) {
 </tr>
 
 <?php
-
 
 $result = mysqli_query($conn, "SELECT * FROM alunos");
 
